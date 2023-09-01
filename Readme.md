@@ -4,24 +4,6 @@
 
 ## Структура директории
 
-|── bin
-| |── classifier
-| | |── dataset.py
-| | |── model.py
-| | |── split_data.py
-| | |── test.py
-| | |── train.csv
-| | |── train.py
-| | |── val.csv
-| |── dicom_refactor.py
-| |── jpg_rgb_refactor.py
-| |── sort.py
-|── checkpoints
-|── classwork
-|── env
-|── logs
-|── settings.txt
-
 - bin: Здесь находятся основные скрипты для обработки данных.
 - checkpoints: Папка для сохранения контрольных точек модели.
 - classwork: Рабочие файлы и задания, связанные с проектом.
