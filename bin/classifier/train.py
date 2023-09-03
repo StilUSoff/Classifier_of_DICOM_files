@@ -6,7 +6,7 @@ import torch
 import torchvision.transforms as transforms
 from dataset import MedicalDataset, AttributesDataset, mean, std
 from model import MultiOutputModel
-from test import calculate_metrics, validate, visualize_grid
+from test import calculate_metrics, validate
 from torch.utils.data import DataLoader
 from torch.utils.tensorboard import SummaryWriter
 
@@ -106,10 +106,10 @@ class train():
 
             logger.add_scalar('train_loss', total_loss / n_train_samples, epoch)
 
-            if epoch % (self.N_epochs * 0.1) == 0:
+            if epoch % round(self.N_epochs * 0.1) == 0:
                 validate(model, val_dataloader, logger, epoch, self.device)
 
-            if epoch % (self.N_epochs * 0.5) == 0:
+            if epoch % round(self.N_epochs * 0.5) == 0:
                 self.checkpoint_save(model, savedir, epoch)
 
     def get_cur_time(self):
@@ -132,7 +132,7 @@ if __name__ == '__main__':
     parser.add_argument('device', type=str, default='cuda', help="Device: 'cuda' or 'cpu'")
     parser.add_argument('start_epoch', type=int, default='1', help="Number of first epoch")
     parser.add_argument('N_epochs', type=int, default='50', help="Amount of epochs")
-    parser.add_argument('batch_size', type=int, default='16', help="Batch size")
-    parser.add_argument('num_workers', type=int, default='6', help="num_workers")
+    parser.add_argument('batch_size', type=int, default='8', help="Batch size")
+    parser.add_argument('num_workers', type=int, default='8', help="num_workers")
     args = parser.parse_args()
     main(args.work_folder,args.attributes_file,args.device,args.start_epoch,args.N_epochs,args.batch_size,args.num_workers)
