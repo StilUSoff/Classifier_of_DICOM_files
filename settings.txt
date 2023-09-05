@@ -4,7 +4,6 @@ pillow
 scikit-learn
 torch
 torchvision
-torch===1.7.0 torchvision===0.6.0 -f https://download.pytorch.org/whl/torch_stable.html
 tqdm
 argparse
 opencv-python
