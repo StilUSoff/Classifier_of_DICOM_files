@@ -11,6 +11,7 @@ from torch.utils.data import DataLoader
 from progress.bar import IncrementalBar
 import pandas as pd
 import os
+import glob
 import csv
 from jpg_rgb_refactor import converting
 
@@ -82,22 +83,33 @@ def create_csv(directory=None,modalities=None,bodyparts=None,names=None ):
         writer.writeheader()
         writer.writerows(data)
 
-def main(work_folder,checkpoint,attributes_file,device):
+def newest_file(string_to_remove):
+    current_directory = os.path.dirname(os.path.abspath(__file__))
+    current_directory = current_directory.replace(string_to_remove, "")+"/checkpoints"
+    subdirectories = [os.path.join(current_directory, d) for d in os.listdir(current_directory) if os.path.isdir(os.path.join(current_directory, d))]
+    newest_directory = max(subdirectories, key=lambda x: os.path.getctime(x))
+    os.chdir(newest_directory)
+    newest = max(glob.glob('*'), key=lambda x: os.path.getctime(x))
+    return newest
+
+def main(work_folder):
     device = torch.device("cuda" if torch.cuda.is_available() and device == 'cuda' else "cpu")
-    attributes = AttributesDataset(attributes_file)
+    attributes = AttributesDataset("val.csv")
     converting(work_folder,2)
     val_transform = transforms.Compose([transforms.Resize((512, 512)), transforms.ToTensor(), transforms.Normalize(mean, std)])
     create_csv(directory=work_folder)
     test_dataset = MedicalDataset('work_labels.csv', attributes, val_transform)
     test_dataloader = DataLoader(test_dataset, batch_size=64, shuffle=False, num_workers=8)
     model = MultiOutputModel(n_Modality_classes=attributes.num_Modality, n_Bodypart_classes=attributes.num_Bodypart).to(device)
+    checkpoint= newest_file("bin/classifier/classifier.py")
     visualize_grid(model, test_dataloader, attributes, device, checkpoint=checkpoint)
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Inference pipeline')
-    parser.add_argument('work_folder', type=str, default="/Project/Work_path", help="Path to the images")
-    parser.add_argument('checkpoint', type=str, help="Path to the checkpoint")
-    parser.add_argument('attributes_file', type=str, default='/data/labels.csv', help="Path to the file with attributes")
-    parser.add_argument('device', type=str, default='cuda',help="Device: 'cuda' or 'cpu'")
+    parser.add_argument('work_folder', type=str, help="Path to the folder with images")
     args = parser.parse_args()
-    main(args.work_folder,args.checkpoint,args.attributes_file,args.device)
+    if any(vars(args).values()):
+        main(args.work_folder)
+    if not any(vars(args).values()):
+        work_folder = input("Please enter folder with images")
+        main(work_folder)
