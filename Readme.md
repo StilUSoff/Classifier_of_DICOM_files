@@ -57,7 +57,7 @@ python split_data.py [путь к начальной директории с и�
 - Однако для создания и полноценной работы приложения на основе этого репозитория вам понадобится JS. В таком случае можете выполнить в терминале следующий перечень команд:
    - npm install -g electron
    - python -m venv venv
-   - source venv/bin/activate
+   - source venv/bin/activate (or venv\Scripts\activate for Windows)
    - pip install -r requirements.txt
    - npm install electron-builder --save-dev
    - npm install electron electron-reload
