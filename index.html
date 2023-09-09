@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Classifier App</title>
+
+    <style>
+        h1 {
+            color: #333;
+        }
+        button {
+            background-color: #0074d9;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            cursor: pointer;
+        }
+    </style>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('myButton').addEventListener('click', function() {
+                console.log('Кнопка была нажата');
+            });
+
+            function updateResult(resultText) {
+                const resultElement = document.getElementById('result-text');
+                resultElement.textContent = `Результат: ${resultText}`;
+            }
+
+            updateResult('Обработано из classifier.py: результат');
+        });
+    </script>
+</head>
+<body>
+    <h1>Добро пожаловать в мое Electron-приложение</h1>
+    <button id="myButton">Нажмите меня</button>
+
+    <div id="result-container">
+        <p id="result-text">Результат: ожидание данных...</p>
+    </div>
+
+    <!-- Добавленная таблица для данных -->
+    <table id="data-table">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Modality</th>
+                <th>Bodypart</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Данные будут добавлены здесь из main.js -->
+        </tbody>
+    </table>
+
+    <script>
+
+        // Функция для обновления таблицы данными из main.js
+        function updateTable(data) {
+            const tableBody = document.querySelector('#data-table tbody');
+            tableBody.innerHTML = '';
+
+            data.forEach(item => {
+                const row = document.createElement('tr');
+                const nameCell = document.createElement('td');
+                const modalityCell = document.createElement('td');
+                const bodypartCell = document.createElement('td');
+
+                nameCell.textContent = item.Name;
+                modalityCell.textContent = item.Modality;
+                bodypartCell.textContent = item.Bodypart;
+
+                row.appendChild(nameCell);
+                row.appendChild(modalityCell);
+                row.appendChild(bodypartCell);
+
+                tableBody.appendChild(row);
+            });
+        }
+
+        // Вызываем функцию updateTable с данными из main.js
+        updateTable(dataFromMainJS);
+    </script>
+</body>
+</html>
