@@ -1,73 +1,64 @@
 {
-    "name": "Classifier",
-    "version": "1.0.0",
-    "description": "Classifier of DICOM files by modality and body part",
-    "main": "main.js",
-    "scripts": {
-        "start": "electron .",
-        "pack": "electron-builder --dir",
-        "dist": "electron-builder"
+  "name": "Classifier",
+  "version": "1.0.0",
+  "description": "Classifier of DICOM files by modality and body part",
+  "main": "main.js",
+  "scripts": {
+    "start": "NODE_ENV=development electron main.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/StilUSoff/Classifier_of_DICOM_files.git"
+  },
+  "keywords": [
+    "classifier",
+    "app",
+    "electron"
+  ],
+  "author": "Tugay Vadim",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/StilUSoff/Classifier_of_DICOM_files/issues"
+  },
+  "homepage": "https://github.com/StilUSoff/Classifier_of_DICOM_files#readme",
+  "devDependencies": {
+    "electron": "^13.6.9",
+    "electron-builder": "^22.14.13",
+    "electron-reload": "^2.0.0-alpha.1"
+  },
+  "build": {
+    "appId": "com.stilus.classapp",
+    "productName": "Classifier App",
+    "directories": {
+      "output": "build"
     },
-    "dependencies": {},
-    "repository": {
-        "type": "git",
-        "url": "git+https://github.com/StilUSoff/Classifier_of_DICOM_files.git"
-    },
-    "keywords": [
-        "classifier",
-        "app",
-        "electron"
+    "files": [
+      "app/**/*",
+      "classifier.py",
+      "main.js",
+      "renderer/renderer.js",
+      "renderer/index.html",
+      "preload.js",
+      "package.json"
     ],
-    "author": "Tugay Vadim",
-    "license": "MIT",
-    "bugs": {
-        "url": "https://github.com/StilUSoff/Classifier_of_DICOM_files/issues"
+    "extraResources": [
+      {
+        "from": "./resources",
+        "to": "resources",
+        "filter": [
+          "**/*"
+        ]
+      }
+    ],
+    "mac": {
+      "icon": "resources/icon.icns"
     },
-    "homepage": "https://github.com/StilUSoff/Classifier_of_DICOM_files#readme",
-    "devDependencies": {
-        "electron": "^13.1.4",
-        "electron-builder": "^22.14.13"
+    "win": {
+      "icon": "resources/icon.ico"
     },
-    "build": {
-        "appId": "com.stilus.classapp",
-        "productName": "Classifier App",
-        "files": [
-            "app/**/*",
-            "node_modules/**/*",
-            "main.js",
-            "index.html",
-            "package.json"
-        ],
-        "extraResources": [
-            {
-                "from": "./resources",
-                "to": "resources",
-                "filter": [
-                    "**/*"
-                ]
-            }
-        ],
-        "mac": {
-            "target": [
-                "dmg",
-                "zip"
-            ],
-            "icon": "resources/icon.icns"
-        },
-        "win": {
-            "target": [
-                "nsis",
-                "zip"
-            ],
-            "icon": "resources/icon.ico"
-        },
-        "linux": {
-            "target": [
-                "deb",
-                "tar.gz"
-            ],
-            "category": "Utility",
-            "icon": "resources/icon.png"
-        }
+    "linux": {
+      "category": "Utility",
+      "icon": "resources/icon.png"
     }
+  }
 }

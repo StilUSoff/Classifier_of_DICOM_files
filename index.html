@@ -3,83 +3,128 @@
 <head>
     <meta charset="UTF-8">
     <title>Classifier App</title>
-
-    <style>
-        h1 {
-            color: #333;
+    
+   <style>
+        body {
+            background-color: #2b2a29;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh; 
         }
+
+        h1 {
+            color: #ffffffc9;
+            font-size: 40px;
+            font-weight: 700;
+            font-family: "Helvetica Neue", sans-serif;
+            text-align: center;
+            margin-top: 20px;
+        }
+
         button {
-            background-color: #0074d9;
+            background-color: #440c52;
             color: #fff;
-            padding: 10px 20px;
+            font-size: 18px;
+            font-weight: 700;
+            font-family: "Trebuchet MS", sans-serif;
+            padding: 12px 24px;
             border: none;
             cursor: pointer;
+            border-radius: 25px;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+            transition: background-color 0.3s, transform 0.2s;
+            display: block;
+            margin: 0 auto;
+        }
+
+        button:hover {
+            background-color: #601174;
+            transform: scale(1.10);
+        }
+
+        #result-container {
+            text-align: center;
+            opacity: 0; 
+            transition: opacity 0.5s ease-in-out;
+        }
+
+        #result-text {
+            color: #ffffff46;
+            font-size: 20px;
+            margin-top: 20px;
+        }
+
+        #data-table {
+            opacity: 0; 
+            transition: opacity 0.5s ease-in-out;
+            display: none; 
+            margin: 20px auto;
+            border-collapse: collapse;
+            box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+            border: 2px solid #440c52; 
+        }
+
+        th, td {
+            padding: 15px;
+            text-align: center;
+        }
+
+        th {
+            background-color: #440c52;
+            color: #ffffffc9;
+        }
+
+        th:first-child {
+            width: 40%;
+        }
+
+        th:nth-child(2) {
+            width: 30%; 
+        }
+
+        th:nth-child(3) {
+            width: 30%;
+        }
+
+        td {
+            background-color: #601174;
+            color: #ffffffc9;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
         }
     </style>
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            document.getElementById('myButton').addEventListener('click', function() {
-                console.log('Кнопка была нажата');
-            });
 
-            function updateResult(resultText) {
-                const resultElement = document.getElementById('result-text');
-                resultElement.textContent = `Результат: ${resultText}`;
-            }
-
-            updateResult('Обработано из classifier.py: результат');
-        });
-    </script>
 </head>
 <body>
-    <h1>Добро пожаловать в мое Electron-приложение</h1>
-    <button id="myButton">Нажмите меня</button>
+    <h1>Classifier of DICOM files</h1>
+    <button id="myButton">Folder for classification</button>
 
     <div id="result-container">
-        <p id="result-text">Результат: ожидание данных...</p>
+        <p id="result-text">Waiting for data...</p>
     </div>
 
-    <!-- Добавленная таблица для данных -->
     <table id="data-table">
         <thead>
             <tr>
-                <th>Name</th>
-                <th>Modality</th>
-                <th>Bodypart</th>
+                <th class="name">Name</th>
+                <th class="modality">Modality</th>
+                <th class="bodypart">Bodypart</th>
             </tr>
-        </thead>
+        </thead>        
         <tbody>
-            <!-- Данные будут добавлены здесь из main.js -->
+            <!-- Здесь будут отображаться данные после получения от render.js -->
         </tbody>
     </table>
 
-    <script>
-
-        // Функция для обновления таблицы данными из main.js
-        function updateTable(data) {
-            const tableBody = document.querySelector('#data-table tbody');
-            tableBody.innerHTML = '';
-
-            data.forEach(item => {
-                const row = document.createElement('tr');
-                const nameCell = document.createElement('td');
-                const modalityCell = document.createElement('td');
-                const bodypartCell = document.createElement('td');
-
-                nameCell.textContent = item.Name;
-                modalityCell.textContent = item.Modality;
-                bodypartCell.textContent = item.Bodypart;
-
-                row.appendChild(nameCell);
-                row.appendChild(modalityCell);
-                row.appendChild(bodypartCell);
-
-                tableBody.appendChild(row);
-            });
-        }
-
-        // Вызываем функцию updateTable с данными из main.js
-        updateTable(dataFromMainJS);
-    </script>
+    <!-- Подключаем скрипты render.js и main.js -->
+    <script src="renderer.js"></script>
+    <script src="main.js"></script>
 </body>
 </html>
