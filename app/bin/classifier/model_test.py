@@ -4,7 +4,6 @@ import torch
 from sklearn.metrics import confusion_matrix, ConfusionMatrixDisplay, balanced_accuracy_score, precision_score, recall_score, f1_score
 
 def checkpoint_load(model, name):
-    print('Restoring checkpoint: {}'.format(name))
     model.load_state_dict(torch.load(name, map_location='cpu'))
     epoch = int(os.path.splitext(os.path.basename(name))[0].split('-')[1])
     return epoch

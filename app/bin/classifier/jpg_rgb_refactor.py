@@ -2,17 +2,15 @@ import cv2
 from PIL import Image
 import argparse
 import os
-from progress.bar import IncrementalBar
 
 class convert():
 
     def __init__(self, folder_path):
         self.folder_path=folder_path
-        self.bar = IncrementalBar ('', max = len(os.listdir(self.folder_path)))
 
     def files_iter(self, check):
         for self.filename in os.listdir(self.folder_path):
-            if self.filename[0:1] == '.':
+            if self.filename[0:1] == '.' or not self.filename.endswith((".jpeg", ".tif", ".TIFF", ".tiff", ".PNG", ".JPEG", ".TIF", ".jpg",".JPG")):
                 continue
             if check==0:
                 self.convert_to_jpg()
@@ -25,8 +23,6 @@ class convert():
             else:
                 print("ERROR: incorrect value of ‘check’")
                 break
-            self.bar.next()
-        self.bar.finish()
 
     def convert_to_jpg(self):
             if self.filename.endswith((".jpeg", ".tif", ".TIFF", ".tiff", ".PNG", ".JPEG", ".TIF")):

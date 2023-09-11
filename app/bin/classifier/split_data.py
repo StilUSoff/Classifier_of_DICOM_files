@@ -1,7 +1,6 @@
 import argparse
 import csv
 import os
-from progress.bar import IncrementalBar
 import numpy as np
 from tqdm import tqdm
 
@@ -20,8 +19,6 @@ class split_data():
         with open(self.annotation) as csv_file:
             # parse it as CSV
             reader = csv.DictReader(csv_file)
-            # tqdm shows pretty progress bar
-            # each row in the CSV file corresponds to the image
             for row in tqdm(reader, total=reader.line_num):
                 # we need image ID to build the path to the image file
                 img_id = row['Name']
@@ -46,7 +43,6 @@ class split_data():
         check=0
         with open(self.annotation, 'r') as f:
             lines = f.readlines()
-        bar = IncrementalBar('', max=len(os.listdir(self.input_folder)))
         for i, line in enumerate(lines):
             img_name = line.split(',')[0].split('/')[-1]
             if img_name=="Name":
@@ -55,11 +51,9 @@ class split_data():
             if not os.path.exists(img_path):
                 print(f"Image not found: {img_path}")
                 check=1
-            bar.next()
         if check==1:
             print("ERROR: check the existence of files above")
             exit
-        bar.finish
         print("check end")
 
     def save_csv(self, data, path, fieldnames=['Name', 'Modality', 'Bodypart']):

@@ -1,60 +1,78 @@
 import customtkinter as ctk
-import subprocess
+import os
+from tkinter import filedialog, messagebox
+import threading
+import tkinter as tk
+from tkinter import ttk
+import sys
+sys.path.append('app/')
+import classifier
+
 
 class App(ctk.CTk):
+
     def __init__(self):
         super().__init__()
+        self.title("Classifier of DICOM files")
+        self.geometry("800x600")
+        self.main_frame = ctk.CTkFrame(self)
+        self.main_frame.pack(fill=ctk.BOTH, expand=True)
+        select_button = ctk.CTkButton(self.main_frame, text="Выбрать папку", command=self.select_folder)
+        select_button.pack(pady=20)
+        self.data_table = MyTable(master=self.main_frame)
+        self.data_table.pack(fill=ctk.BOTH, expand=True)
+        
 
-        # Добавляем стили, аналогичные CSS из вашего HTML
-        self.add_style("body", background_color="#2b2a29", font_family="Arial, sans-serif", margin=0, padding=0, display="flex", flex_direction="column", justify_content="center", align_items="center", height="100vh")
-        self.add_style("h1", color="#ffffffc9", font_size="40px", font_weight=700, font_family='"Helvetica Neue", sans-serif', text_align="center", margin_top="20px")
-        self.add_style("button", background_color="#440c52", color="#fff", font_size="18px", font_weight=700, font_family='"Trebuchet MS", sans-serif', padding="12px 24px", border="none", cursor="pointer", border_radius="25px", box_shadow="0px 4px 6px rgba(0, 0, 0, 0.1)", transition="background-color 0.3s, transform 0.2s", display="block", margin="0 auto")
-        self.add_style("button:hover", background_color="#601174", transform="scale(1.10)")
-        self.add_style("result-container", text_align="center", opacity=0, transition="opacity 0.5s ease-in-out")
-        self.add_style("result-text", color="#ffffff46", font_size="20px", margin_top="20px")
-        self.add_style("data-table", opacity=0, transition="opacity 0.5s ease-in-out", display="none", margin="20px auto", border_collapse="collapse", box_shadow="0px 2px 4px rgba(0, 0, 0, 0.1)", border="2px solid #440c52")
-        self.add_style("th, td", padding="15px", text_align="center")
-        self.add_style("th", background_color="#440c52", color="#ffffffc9")
-        self.add_style("th:first-child", width="40%")
-        self.add_style("th:nth-child(2)", width="30%")
-        self.add_style("th:nth-child(3)", width="30%")
-        self.add_style("td", background_color="#601174", color="#ffffffc9")
-        self.add_style("tr:nth-child(even)", background_color="#f2f2f2")
+    def select_folder(self):
+        folder_path = filedialog.askdirectory(initialdir=os.path.expanduser("~"), title="Choose folder")
+        if folder_path:
+            folder_path = os.path.normpath(folder_path)
+            error = self.error_check(folder_path)
+            if error=="Error":
+                error_message = "Incorrect path: no images"
+                self.show_error_message(error_message)
+            else:
+                thread = threading.Thread(target=self.run_classifier, args=(folder_path,))
+                thread.start()
 
-        # Создаем виджеты, аналогичные элементам вашего HTML
-        title_label = ctk.CTkLabel(self, text="Classifier of DICOM files", style="h1")
-        title_label.pack()
+    def run_classifier(self, folder_path):
+        self.progress_bar = ctk.CTkProgressBar(self.main_frame, mode="indeterminate")
+        self.progress_bar.pack(pady=10)
+        self.progress_bar.start()
+        result_lines = classifier.main(folder_path)
+        self.data_table.display_table(result_lines)
+        self.progress_bar.destroy()
 
-        def select_folder():
-            folder_path = ctk.askdirectory()
-            if folder_path:
-                command = ["python3", "classifier.py", folder_path]  # Измените путь к classifier.py на вашем компьютере
-                process = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-                stdout, stderr = process.communicate()
-                result_label.config(text=f"Path: {folder_path}\n{stdout.decode('utf-8')}")
-                show_table()
+    def error_check(self, work_folder):
+        for filename in os.listdir(work_folder):
+            if filename.endswith((".jpeg", ".tif", ".TIFF", ".tiff", ".PNG", ".JPEG", ".TIF", ".jpg",".JPG")):
+                return ""
+        return "Error"
+            
+    def show_error_message(self, error_message):
+        # Display an error message in a dialog window
+        messagebox.showerror("Error: ", error_message)
 
-        select_button = ctk.CTkButton(self, text="Folder for classification", style="button", command=select_folder)
-        select_button.pack()
 
-        result_label = ctk.CTkLabel(self, text="Waiting for data...", style="result-container")
-        result_label.pack()
+class MyTable(tk.Frame):
+    
+    def __init__(self, master, **kwargs):
+        super().__init__(master, **kwargs)
+        headers = ['Name', 'Modality', 'Bodypart']
+        self.tree = ttk.Treeview(self, columns=headers, show='headings', height=25)
+        for header in headers:
+            self.tree.heading(header, text=header)
+        self.tree.pack(fill=tk.BOTH, expand=True)
 
-        data_table = ctk.CTkTreeview(self, style="data-table")
-        data_table['columns'] = ("Name", "Modality", "Bodypart")
-        data_table.heading("#1", text="Name")
-        data_table.heading("#2", text="Modality")
-        data_table.heading("#3", text="Bodypart")
-        data_table.column("#1", width=200)
-        data_table.column("#2", width=150)
-        data_table.column("#3", width=150)
-        data_table.pack()
+    def display_table(self, data):
+        for item in self.tree.get_children():
+            self.tree.delete(item)
+        for record in data:
+            file_name = record.get('Name', '')
+            modality = record.get('Modality', '')
+            bodypart = record.get('Bodypart', '')
+            self.tree.insert('', 'end', values=(file_name, modality, bodypart))
 
-        def show_table():
-            data_table.pack()
-            data_table["show"] = "headings"
-            self.add_style("data-table", opacity=1)
-            data_table.update_idletasks()
 
 if __name__ == "__main__":
     app = App()

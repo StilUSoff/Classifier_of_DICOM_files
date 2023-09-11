@@ -3,7 +3,6 @@ import csv
 import numpy as np
 from PIL import Image
 from torch.utils.data import Dataset
-import torch
 
 mean = [0.5, 0.5, 0.5]
 std = [0.5, 0.5, 0.5]
