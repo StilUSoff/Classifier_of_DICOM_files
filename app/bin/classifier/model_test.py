@@ -1,7 +1,7 @@
 import os
 import warnings
 import torch
-from sklearn.metrics import confusion_matrix, ConfusionMatrixDisplay, balanced_accuracy_score, precision_score, recall_score, f1_score
+from sklearn.metrics import balanced_accuracy_score
 
 def checkpoint_load(model, name):
     model.load_state_dict(torch.load(name, map_location='cpu'))
@@ -25,7 +25,7 @@ def validate(model, dataloader, logger, iteration, device, checkpoint=None):
             target_labels = {t: target_labels[t].to(device) for t in target_labels}
             output = model(img.to(device))
 
-            val_train, val_train_losses = model.get_loss(output, target_labels)
+            val_train = model.get_loss(output, target_labels)
             avg_loss += val_train.item()
             batch_accuracy_Modality, batch_accuracy_Bodypart = calculate_metrics(output, target_labels)
 

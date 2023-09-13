@@ -1,7 +1,6 @@
 import os
 import shutil
 import argparse
-from progress.bar import IncrementalBar
 
 class sort():
     """find and sort files"""
@@ -36,14 +35,11 @@ def runscript(folder_path):
     folder1 = sort(folder_path,folder_path,folder_path)
     folder1.script()
     list = os.listdir(folder_path)
-    bar = IncrementalBar('', max=len(list))
     for files in list:
         if os.path.isdir(folder_path + '/' + files):
             if not (os.path.exists(folder_path + '/' + files) and os.listdir(folder_path + '/' + files)):
                 path = os.path.join(os.path.abspath(os.path.dirname(__file__)), folder_path + '/' + files)
                 shutil.rmtree(path)
-        self.bar.next()
-    self.bar.finish()
 
 def main(path):
     check = 0

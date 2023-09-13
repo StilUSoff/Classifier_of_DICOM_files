@@ -1,3 +1,4 @@
+import argparse
 import numpy as np
 import torch
 import torchvision.transforms as transforms
@@ -10,14 +11,13 @@ sys.path.append('app/bin/classifier')
 from dataset import MedicalDataset, AttributesDataset, mean, std
 from model import MultiOutputModel
 from model_test import checkpoint_load
-from jpg_rgb_refactor import converting
+import jpg_rgb_refactor
 
 
 def visualize_grid(model, dataloader, attributes, device, checkpoint=None):
     if checkpoint is not None:
         checkpoint_load(model, checkpoint)
     model.eval()
-
     imgs = []
     labels = []
     predicted_Modality_all = []
@@ -34,14 +34,9 @@ def visualize_grid(model, dataloader, attributes, device, checkpoint=None):
             _, predicted_Bodypart = output['Bodypart'].cpu().max(1)
 
             for i in range(img.shape[0]):
-
-                # if i==0:
-                #     continue
-
                 image = np.clip(img[i].permute(1, 2, 0).numpy() * std + mean, 0, 1)
                 predicted_Modality_all.append(predicted_Modality[i].item())
                 predicted_Bodypart_all.append(predicted_Bodypart[i].item())
-
                 imgs.append(image)
                 labels.append(f"Image: {image_names[i]}\nModality: {attributes.Modality_labels[predicted_Modality[i].item()]}\nBodypart: {attributes.Bodypart_labels[predicted_Bodypart[i].item()]}")
 
@@ -58,7 +53,6 @@ def visualize_grid(model, dataloader, attributes, device, checkpoint=None):
 def create_csv(directory=None,modalities=None,bodyparts=None,names=None,check=None):
     fieldnames = ['Name', 'Modality', 'Bodypart']
     data=[]
-
     if directory is not None:
         file_paths = [os.path.join(directory, f) for f in os.listdir(directory) if f.endswith('.jpg')]
         data = [{'Name': path, 'Modality': "CT", 'Bodypart': "Hand"} for path in file_paths]
@@ -90,7 +84,7 @@ def main(work_folder):
     checkpoint = newest_file("checkpoints")
     device = torch.device("cuda" if torch.cuda.is_available() and device == 'cuda' else "cpu")
     attributes = AttributesDataset(os.path.join(os.path.dirname(os.path.abspath(__file__)),"bin/classifier/val.csv"))
-    converting(work_folder,2)
+    jpg_rgb_refactor.main(work_folder,2)
     val_transform = transforms.Compose([transforms.Resize((512, 512)), transforms.ToTensor(), transforms.Normalize(mean, std)])
     create_csv(directory=work_folder)
     test_dataset = MedicalDataset('.work_labels.csv', attributes, val_transform)
@@ -99,4 +93,8 @@ def main(work_folder):
     data = visualize_grid(model, test_dataloader, attributes, device, checkpoint=checkpoint)
     return data
 
-# main('/Users/tugayvadim/Documents/PycharmProjects/Classifier_app/img')
+if __name__ == '__main__':
+    parser = argparse.ArgumentParser(description='Inference pipeline')
+    parser.add_argument('work_folder', type=str, default="/img", help="Path to the images")
+    args = parser.parse_args()
+    main(args.work_folder)

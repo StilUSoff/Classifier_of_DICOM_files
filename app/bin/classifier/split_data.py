@@ -6,55 +6,43 @@ from tqdm import tqdm
 
 class split_data():
 
-    def __init__(self,input_folder,output_folder,file_name):
-        self.input_folder=input_folder
-        self.output_folder=output_folder
-        self.annotation = os.path.join(self.input_folder, file_name)
+    def __init__(self, input_folder, output_folder, file_name):
+        self.input_folder = input_folder
+        self.output_folder = output_folder
+        self.annotation = file_name
 
     def split(self):
-        #check for correct data
-        self.check()
-        # open annotation file
         all_data = []
-        with open(self.annotation) as csv_file:
-            # parse it as CSV
-            reader = csv.DictReader(csv_file)
-            for row in tqdm(reader, total=reader.line_num):
-                # we need image ID to build the path to the image file
-                img_id = row['Name']
-                Modality = row['Modality']
-                Bodypart = row['Bodypart']
-                img_name = os.path.join(self.input_folder, str(img_id))
-                all_data.append([img_name, Modality, Bodypart])
-        np.random.seed(42)
-        all_data = np.asarray(all_data)
-        inds = np.random.choice(42512, 42512, replace=False)
-        self.save_csv(all_data[inds][:35000], os.path.join(self.output_folder, 'train.csv'))
-        self.save_csv(all_data[inds][35000:42512], os.path.join(self.output_folder, 'val.csv'))
+        try:
+            with open(self.annotation, newline='', encoding='utf-8-sig') as csv_file:
+                dialect = csv.Sniffer().sniff(csv_file.read(1024))
+                csv_file.seek(0)
+                reader = csv.DictReader(csv_file, dialect=dialect)
+                required_headers = {'Name', 'Modality', 'Bodypart'}
+                fieldnames = [fieldname.lstrip('\ufeff') for fieldname in reader.fieldnames]
+                check_headers = set(fieldnames)
 
-    def check(self):
-        # for name in os.listdir(self.input_folder):
-        #     if "ventrik" in name:
-        #         print(name)
-        #         file=name.replace("ü", "")
-        #         file=f"{self.input_folder}/{file}"
-        #         os.rename(f"{self.input_folder}/{name}", file)
-        print("check...")
-        check=0
-        with open(self.annotation, 'r') as f:
-            lines = f.readlines()
-        for i, line in enumerate(lines):
-            img_name = line.split(',')[0].split('/')[-1]
-            if img_name=="Name":
-                continue
-            img_path = os.path.join(self.input_folder, img_name)
-            if not os.path.exists(img_path):
-                print(f"Image not found: {img_path}")
-                check=1
-        if check==1:
-            print("ERROR: check the existence of files above")
-            exit
-        print("check end")
+                if not required_headers.issubset(check_headers):
+                    raise Exception("Missing required headers: " + ', '.join(required_headers - check_headers))
+
+                for row in tqdm(reader, total=reader.line_num):
+                    img_id = row[reader.fieldnames[0]]
+                    Modality = row[reader.fieldnames[1]]
+                    Bodypart = row[reader.fieldnames[2]]
+                    img_name = os.path.join(self.input_folder, str(img_id))
+                    all_data.append([img_name, Modality, Bodypart])
+
+            np.random.seed(42)
+            all_data = np.asarray(all_data)
+            n_all_data = len(all_data)
+            inds = np.random.choice(n_all_data, n_all_data, replace=False)
+
+            split_index = int(0.8 * n_all_data)
+            self.save_csv(all_data[inds][:split_index], os.path.join(self.output_folder, 'train.csv'))
+            self.save_csv(all_data[inds][split_index:], os.path.join(self.output_folder, 'val.csv'))
+
+        except Exception as e:
+            return str(e)
 
     def save_csv(self, data, path, fieldnames=['Name', 'Modality', 'Bodypart']):
         with open(path, 'w', newline='') as csv_file:
@@ -63,14 +51,17 @@ class split_data():
             for row in data:
                 writer.writerow(dict(zip(fieldnames, row)))
 
-def main(input_path,output_path,file_name):
-    script = split_data(input_path,output_path,file_name)
-    script.split()
+def main(input_path, output_path, file_name):
+    script = split_data(input_path, output_path, file_name)
+    result = script.split()
+    if result:
+        print("Error during data split:", result)
+        return "Error"
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Split data for the dataset')
     parser.add_argument('input_path', type=str, help="Path to the dataset")
     parser.add_argument('output_path', type=str, help="Path to the working folder")
-    parser.add_argument('file_name', type=str, help="Name of the file with labels")
+    parser.add_argument('file_name', type=str, help="Path to the file with labels")
     args = parser.parse_args()
-    main(args.input_path,args.output_path,args.file_name)
+    main(args.input_path, args.output_path, args.file_name)

@@ -45,7 +45,7 @@ class convert():
                 os.remove(os.path.join(self.folder_path, self.filename))
                 cv2.imwrite(filepath, rgb_img)
 
-def converting(folder_path, check):
+def main(folder_path, check):
     object=convert(folder_path)
     object.files_iter(check)
 
@@ -54,4 +54,4 @@ if __name__ == '__main__':
     parser.add_argument("folder_path", nargs='?', type=str, help="path of your direct ( Example: /Users/Documents/My_photo )", default='/img')
     parser.add_argument("check", type=int, help="0 for only jpg refactoring, 1 for only RGB transformation, 2 for both", default='2')
     args = parser.parse_args()
-    converting(args.folder_path, args.check)
+    main(args.folder_path, args.check)

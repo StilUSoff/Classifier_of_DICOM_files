@@ -2,7 +2,6 @@ import os
 import pydicom
 import shutil
 import argparse
-from progress.bar import IncrementalBar
 
 class sort():
     """find and sort files"""
@@ -11,56 +10,62 @@ class sort():
         """folder path"""
         self.folder_path = folder_path
         self.massive_of_files = os.listdir(self.folder_path)
-        self.bar = IncrementalBar ('', max = len(os.listdir(self.folder_path)))
 
     def script(self,body):
         """main script"""
+        self.not_sorted = []
         check = 0
         self.sort_files(check)
         if body == 'y':
             check = 1
             self.__init__(self.folder_path)
             for folder in self.massive_of_files:
-                if folder == '.DS_Store':
+                if not os.path.isdir(os.path.join(self.folder_path, folder)):
                     continue
                 elif os.path.exists(self.folder_path + '/' + folder):
                     self.__init__(self.folder_path + '/' + folder)
                     self.sort_files(check)
                     old_folder_path = self.folder_path.replace('/' + folder, '')
                     self.__init__(old_folder_path)
-                self.bar.next()
-        self.bar.finish()
+        return self.not_sorted
 
     def sort_files(self, check):
         """sort of files (check==0: sort by modality; check==1: sort by body parts)"""
         for filename in self.massive_of_files:
-            if filename[0:1]=='.':
+            if filename[0:1] == '.' or os.path.isdir(os.path.join(self.folder_path, filename)):
                 continue
-            metadata = self.metadata_find(filename)
-            if metadata==0:
-                continue
-
-            if check==0:
-                full_path = self.folder_path + '/' + metadata.get((0x0008, 0x0060))[0:]
             else:
-                full_path = self.folder_path + '/' + metadata.get((0x0018, 0x0015))[0:]
+                metadata = self.metadata_find(filename, check)
+                if metadata==None:
+                    continue
 
-            if not os.path.exists(full_path):
-                os.mkdir(full_path)
-            shutil.move(self.file_path, full_path)
+                if check==0:
+                    full_path = self.folder_path + '/' + metadata.get((0x0008, 0x0060))[0:]
+                else:
+                    full_path = self.folder_path + '/' + metadata.get((0x0018, 0x0015))[0:]
 
-    def metadata_find(self, filename):
+                if not os.path.exists(full_path):
+                    os.mkdir(full_path)
+                shutil.move(self.file_path, full_path)
+
+    def metadata_find(self, filename, check):
         """initialization of metadata"""
         self.filename = filename
-        if self.filename == '.DS_Store' or os.path.isdir(self.filename):
-            return 0
         self.file_path = self.folder_path + '/' + self.filename
         metadata = pydicom.dcmread(self.file_path, force=True)
+        if check == 0 and (0x0008, 0x0060) not in metadata:
+            self.not_sorted.append(f'No Modality for file: {str(self.filename)}')
+            return None
+        elif check == 1 and (0x0018, 0x0015) not in metadata:
+            self.not_sorted.append(f'No BodyPart for file: {str(self.filename)}')
+            return None
         return metadata
 
 def main(path,body):
     folder1 = sort(path)
-    folder1.script(body)
+    object = folder1.script(body)
+    if object != []:
+        return object
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()

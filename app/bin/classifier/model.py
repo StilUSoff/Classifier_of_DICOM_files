@@ -41,4 +41,4 @@ class MultiOutputModel(nn.Module):
         Modality_loss = F.cross_entropy(net_output['Modality'], ground_truth['Modality_labels'])
         Bodypart_loss = F.cross_entropy(net_output['Bodypart'], ground_truth['Bodypart_labels'])
         loss = Modality_loss + Bodypart_loss
-        return loss, {'color': Modality_loss, 'Bodypart': Bodypart_loss}
+        return loss

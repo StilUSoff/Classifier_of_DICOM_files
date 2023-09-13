@@ -1,36 +1,41 @@
 import argparse
 import os
 from datetime import datetime
-from progress.bar import IncrementalBar
 import torch
 import torchvision.transforms as transforms
 from dataset import MedicalDataset, AttributesDataset, mean, std
 from model import MultiOutputModel
 from model_test import calculate_metrics, validate
 from torch.utils.data import DataLoader
+from queue import Queue
 from torch.utils.tensorboard import SummaryWriter
 
 
 
 class train():
 
-    def __init__(self,work_folder,attributes_file,device,start_epoch,N_epochs,batch_size,num_workers):
+    def __init__(self,work_folder,attributes_file,device,N_epochs,batch_size,num_workers):
         self.work_folder=work_folder
         self.attributes_file=attributes_file
         self.device=device
-        self.start_epoch = start_epoch
         self.N_epochs = N_epochs
         self.batch_size = batch_size
         self.num_workers = num_workers
+        self.epoch_callback_queue = Queue() 
+
+    def on_epoch_start(self):
+        self.epoch_callback_queue.put("Epoch started")
+
+    def on_epoch_end(self):
+        self.epoch_callback_queue.put("Epoch ended")
 
     def script(self):
-
         self.device = torch.device("cuda" if torch.cuda.is_available() and self.device == 'cuda' else "cpu")
-
-        # attributes variable contains labels for the categories in the dataset and mapping between string names and IDs
+        ###### for test
+        print(self.device)
+        ######
         attributes = AttributesDataset(self.attributes_file)
 
-        # specify image transforms for augmentation during training
         train_transform = transforms.Compose([
         transforms.Resize((512, 512)),
             transforms.RandomHorizontalFlip(p=0.5),
@@ -39,8 +44,6 @@ class train():
             transforms.Normalize(mean, std)
         ])
 
-
-        # during validation we use only tensor and normalization transforms
         val_transform = transforms.Compose([
             transforms.Resize((512, 512)),
             transforms.ToTensor(),
@@ -70,13 +73,11 @@ class train():
 
         n_train_samples = len(train_dataloader)
 
-        print("Starting training ...")
-
-        for epoch in range(self.start_epoch, self.N_epochs + 1):
+        for epoch in range(1, self.N_epochs + 1):
+            self.on_epoch_start()
             total_loss = 0
             accuracy_Modality = 0
             accuracy_Bodypart = 0
-            bar = IncrementalBar('', max=n_train_samples)
 
             for batch in train_dataloader:
                 optimizer.zero_grad()
@@ -86,7 +87,6 @@ class train():
                 target_labels = {t: target_labels[t].to(self.device) for t in target_labels}
                 output = model(img.to(self.device))
 
-                loss_train, losses_train = model.get_loss(output, target_labels)
                 total_loss += loss_train.item()
                 batch_accuracy_Modality, batch_accuracy_Bodypart = calculate_metrics(output, target_labels)
 
@@ -95,8 +95,7 @@ class train():
 
                 loss_train.backward()
                 optimizer.step()
-                bar.next()
-            bar.finish()
+            self.on_epoch_end()
 
             print("epoch {:4d}, loss: {:.4f}, Modality: {:.4f}, Bodypart: {:.4f}".format(
                 epoch,
@@ -118,10 +117,10 @@ class train():
     def checkpoint_save(self, model, name, epoch):
         f = os.path.join(name, 'checkpoint-{:06d}.pth'.format(epoch))
         torch.save(model.state_dict(), f)
-        print('Saved checkpoint:', f)
 
-def main(work_folder,attributes_file,device,start_epoch,N_epochs,batch_size,num_workers):
-    train_object=train(work_folder,attributes_file,device,start_epoch,N_epochs,batch_size,num_workers)
+def main(work_folder,attributes_file,device,N_epochs,batch_size,num_workers):
+
+    train_object=train(work_folder,attributes_file,device,int(N_epochs),int(batch_size),int(num_workers))
     train_object.script()
 
 if __name__ == '__main__':
@@ -130,9 +129,8 @@ if __name__ == '__main__':
     parser.add_argument('attributes_file', type=str, default='/Volumes/ST.SSD/Intership/data/labels.csv',
                         help="Path to the file with attributes")
     parser.add_argument('device', type=str, default='cuda', help="Device: 'cuda' or 'cpu'")
-    parser.add_argument('start_epoch', type=int, default='1', help="Number of first epoch")
     parser.add_argument('N_epochs', type=int, default='50', help="Amount of epochs")
     parser.add_argument('batch_size', type=int, default='8', help="Batch size")
     parser.add_argument('num_workers', type=int, default='8', help="num_workers")
     args = parser.parse_args()
-    main(args.work_folder,args.attributes_file,args.device,args.start_epoch,args.N_epochs,args.batch_size,args.num_workers)
+    main(args.work_folder,args.attributes_file,args.device,args.N_epochs,args.batch_size,args.num_workers)
