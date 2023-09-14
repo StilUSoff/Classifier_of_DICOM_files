@@ -15,7 +15,7 @@ import jpg_rgb_refactor
 
 
 def visualize_grid(model, dataloader, attributes, device, checkpoint=None):
-    if checkpoint is not None:
+    if not checkpoint is None:
         checkpoint_load(model, checkpoint)
     model.eval()
     imgs = []
@@ -48,8 +48,6 @@ def visualize_grid(model, dataloader, attributes, device, checkpoint=None):
     
     return data_to_write
 
-
-
 def create_csv(directory=None,modalities=None,bodyparts=None,names=None,check=None):
     fieldnames = ['Name', 'Modality', 'Bodypart']
     data=[]
@@ -67,7 +65,6 @@ def create_csv(directory=None,modalities=None,bodyparts=None,names=None,check=No
             os.remove(".work_labels.csv")
             return data
 
-
 def newest_file(string_to_add):
     current_directory = os.path.dirname(os.path.abspath(__file__))
     current_directory = os.path.join(current_directory, string_to_add)
@@ -80,10 +77,14 @@ def newest_file(string_to_add):
     return os.path.join(current_directory,newest_directory,newest)
 
 
-def main(work_folder):
-    checkpoint = newest_file("checkpoints")
+def main(work_folder, save=None, val=None):
+    if save is None and val is None:
+        checkpoint = newest_file("checkpoints")
+        attributes = AttributesDataset(os.path.join(os.path.dirname(os.path.abspath(__file__)),"bin/classifier/val.csv"))
+    else:
+        checkpoint = save
+        attributes = AttributesDataset(val)
     device = torch.device("cuda" if torch.cuda.is_available() and device == 'cuda' else "cpu")
-    attributes = AttributesDataset(os.path.join(os.path.dirname(os.path.abspath(__file__)),"bin/classifier/val.csv"))
     jpg_rgb_refactor.main(work_folder,2)
     val_transform = transforms.Compose([transforms.Resize((512, 512)), transforms.ToTensor(), transforms.Normalize(mean, std)])
     create_csv(directory=work_folder)
