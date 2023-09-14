@@ -2,7 +2,6 @@
 
 ####### сделать главную страницу (красивое изображение по центру и перенос виджета выбора влево)
 
-
 import customtkinter as ctk
 import os
 from tkinter import filedialog, messagebox
