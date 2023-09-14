@@ -1,3 +1,8 @@
+####### покрас CTkEntry в зеленый И ПОПЫТКА ДОБИТЬ ПРОГРЕСБАР
+
+####### сделать главную страницу (красивое изображение по центру и перенос виджета выбора влево)
+
+
 import customtkinter as ctk
 import os
 from tkinter import filedialog, messagebox
