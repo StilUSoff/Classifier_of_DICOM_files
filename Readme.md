@@ -37,23 +37,17 @@
 
 1. Sorting DICOM Files: If you want to sort DICOM files based on metadata (e.g., Modality or BodyPartExamined), you can use sort.py. It sorts files into corresponding subdirectories within the initial directory. Run it as follows:
 
-   ```
-   python sort.py [path to the initial directory] [y or n]
-   ```
+   ```python sort.py [path to the initial directory] [y or n]```
    - y: Sorts all files by modality and body parts.
    - n: Sorts files only by modality.
 
 2. DICOM File Preprocessing: To preprocess DICOM files, you can use dicom_refactor.py. It converts DICOM files into JPEG images and saves them in the /img subdirectory. Run it as follows:
 
-   ```
-   python dicom_refactor.py [path to the directory with DICOM files]
-   ```
+   ```python dicom_refactor.py [path to the directory with DICOM files]```
 
 3. Converting Images to RGB: If you want to convert images to RGB format, you can use jpg_rgb_refactor.py. It performs this operation and saves the updated files in the same directory. You can run it as follows:
 
-   ```
-   python jpg_rgb_refactor.py [path to the directory with images] [0 or 1 or 2]
-   ```
+   ```python jpg_rgb_refactor.py [path to the directory with images] [0 or 1 or 2]```
 
    - 0: Convert to JPEG format only.
    - 1: Convert to RGB format only.
@@ -61,16 +55,12 @@
 
 4. Data Preparation for Model Training: Before starting the model training for modality and body part recognition, you should split the data into training and testing using split_data.py. This script creates train.csv and val.csv files containing image names, modality, and body part information. However, this information is taken from a user-provided .csv file with labels. You can run it as follows:
 
-   ```
-   python split_data.py [path to the initial directory with images] [path to the working directory where train.csv and val.csv will be saved] [path to the .csv file containing image information]
-   ```
+   ```python split_data.py [path to the initial directory with images] [path to the working directory where train.csv and val.csv will be saved] [path to the .csv file containing image information]```
 
 
 5. Model Training: If you have prepared all the necessary data for model training, use train.py. This script uses all the data you've prepared to train the image classifier. You can run it as follows:
 
-   ```
-   python split_data.py [path to the directory with images] [path to train.py] [path where model checkpoints will be saved after training] [use CPU for training - "cpu", use GPU for training - "cuda"] [number of training epochs (more epochs = longer training time and increased accuracy)] [number of images loaded into memory at once (smaller batch size = longer training time and increased accuracy)] [number of processes concurrently generating batches (more parallel processes = less training time and higher CPU load)]
-   ```
+   ```python split_data.py [path to the directory with images] [path to train.py] [path where model checkpoints will be saved after training] [use CPU for training - "cpu", use GPU for training - "cuda"] [number of training epochs (more epochs = longer training time and increased accuracy)] [number of images loaded into memory at once (smaller batch size = longer training time and increased accuracy)] [number of processes concurrently generating batches (more parallel processes = less training time and higher CPU load)]```
 
 
 ## Environment Recommendations
