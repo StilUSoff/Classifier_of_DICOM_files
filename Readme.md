@@ -66,7 +66,7 @@
 ## Environment Recommendations
 
 - Create a Python virtual environment to isolate project dependencies.
-- Install all required Python libraries by running the command ```python3 -m pip install -r requirements.txt```.
+- Install all required Python libraries by running the command ```python3 -m pip install -r requirements.txt```
 - If you want to recreate the application build process (or modify it), you can run the following commands in the terminal:
    - ```python -m venv venv```
    - ```source venv/bin/activate``` (or ```venv\Scripts\activate``` for Windows)
@@ -76,4 +76,4 @@
 
 - Python 3.11.xx
 - Python libraries specified in requirements.txt
-- If model training does not use CUDA but your system configuration meets the requirements, it is recommended to use the command ```pip install torch==1.7.0 -f https://download.pytorch.org/whl/torch_stable.html```.
+- If model training does not use CUDA but your system configuration meets the requirements, it is recommended to use the command ```pip install torch==1.7.0 -f https://download.pytorch.org/whl/torch_stable.html```
