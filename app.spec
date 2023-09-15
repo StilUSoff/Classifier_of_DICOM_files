@@ -25,7 +25,7 @@ a.datas += [
     ('/Users/tugayvadim/Documents/PycharmProjects/Classifier_of_DICOM_files/bin/venv/lib/python3.8/site-packages/torchvision', 'torchvision'),
     ('/Users/tugayvadim/Documents/PycharmProjects/Classifier_of_DICOM_files/bin/venv/lib/python3.8/site-packages/tqdm', 'tqdm'),
     ('/Users/tugayvadim/Documents/PycharmProjects/Classifier_of_DICOM_files/bin/venv/lib/python3.8/site-packages/argparse', 'argparse'),
-    ('/Users/tugayvadim/Documents/PycharmProjects/Classifier_of_DICOM_files/bin/venv/lib/python3.8/site-packages/cv2', 'cv2'),  # opencv-python
+    ('/Users/tugayvadim/Documents/PycharmProjects/Classifier_of_DICOM_files/bin/venv/lib/python3.8/site-packages/cv2', 'cv2'),
     ('/Users/tugayvadim/Documents/PycharmProjects/Classifier_of_DICOM_files/bin/venv/lib/python3.8/site-packages/pydicom', 'pydicom'),
     ('/Users/tugayvadim/Documents/PycharmProjects/Classifier_of_DICOM_files/bin/venv/lib/python3.8/site-packages/datetime', 'datetime'),
     ('/Users/tugayvadim/Documents/PycharmProjects/Classifier_of_DICOM_files/bin/venv/lib/python3.8/site-packages/pandas', 'pandas'),

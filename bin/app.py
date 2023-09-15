@@ -84,9 +84,9 @@ class App(ctk.CTk):
         self.check_var_cl = ctk.StringVar(value="no")
         checkbox_cl = ctk.CTkCheckBox(self.center_frame, fg_color=self.main_color, text="Have your own checkpoint for model?", command=self.checkbox_event_cl, variable=self.check_var_cl, onvalue="yes", offvalue="no")
         checkbox_cl.pack(pady=10)
-        self.save_button = ctk.CTkButton(self.center_frame, hover_color=self.hover_color,fg_color=self.main_color, state="disabled", text="Checkpoint of your model training", command=self.select_check_classifier)  # Обновляем здесь
+        self.save_button = ctk.CTkButton(self.center_frame, hover_color=self.hover_color,fg_color=self.main_color, state="disabled", text="Checkpoint of your model training", command=self.select_check_classifier)
         self.save_button.pack(pady=20)
-        self.val_button = ctk.CTkButton(self.center_frame, hover_color=self.hover_color,fg_color=self.main_color, state="disabled", text="val.csv file from your model trainig", command=self.select_val_classifier)  # Обновляем здесь
+        self.val_button = ctk.CTkButton(self.center_frame, hover_color=self.hover_color,fg_color=self.main_color, state="disabled", text="val.csv file from your model trainig", command=self.select_val_classifier)
         self.val_button.pack(pady=20)
         checkbox_cl.select()
         checkbox_cl.toggle()
@@ -235,7 +235,7 @@ class App(ctk.CTk):
             else:
                 self.current_buttons[0].configure(fg_color=self.chosen_color) 
 
-    def select_check_classifier(self):  # Создаем метод для обработки события выбора модели
+    def select_check_classifier(self): 
         self.model_path = filedialog.askopenfilename(initialdir=os.path.expanduser("~"), title="Choose model checkpoint file")
         if self.model_path:
             self.model_path = os.path.normpath(self.model_path)
@@ -246,7 +246,7 @@ class App(ctk.CTk):
             else:
                 self.current_buttons[2].configure(fg_color=self.chosen_color) 
 
-    def select_val_classifier(self):  # Создаем метод для обработки события выбора модели
+    def select_val_classifier(self):
         self.val_path = filedialog.askopenfilename(initialdir=os.path.expanduser("~"), title="Choose model checkpoint file")
         if self.val_path:
             self.val_path = os.path.normpath(self.val_path)
@@ -349,7 +349,7 @@ class App(ctk.CTk):
             messagebox.showinfo(title="Done!", message="You're all set")
         except Exception as e:
             error_message = f"An error occurred: {str(e)}"
-            traceback.print_exc()  # Эта строка выводит трассировку стека в консоль для дополнительной информации
+            traceback.print_exc() 
             self.show_error_message(error_message)
         if hasattr(self, 'progress_bar') and self.progress_bar:
             self.progress_bar.destroy()
@@ -380,7 +380,7 @@ class App(ctk.CTk):
                 messagebox.showinfo(title="Done!", message="You're all set")
         except Exception as e:
             error_message = f"An error occurred: {str(e)}"
-            traceback.print_exc()  # Эта строка выводит трассировку стека в консоль для дополнительной информации
+            traceback.print_exc() 
             self.show_error_message(error_message)
         if hasattr(self, 'progress_bar') and self.progress_bar:
             self.progress_bar.destroy()
@@ -396,7 +396,7 @@ class App(ctk.CTk):
             messagebox.showinfo(title="Done!", message="You're all set")
         except Exception as e:
             error_message = f"An error occurred: {str(e)}"
-            traceback.print_exc()  # Эта строка выводит трассировку стека в консоль для дополнительной информации
+            traceback.print_exc()
             self.show_error_message(error_message)
         if hasattr(self, 'progress_bar') and self.progress_bar:
             self.progress_bar.destroy()
@@ -415,7 +415,7 @@ class App(ctk.CTk):
                 messagebox.showinfo(title="Done!", message="You're all set")
         except Exception as e:
             error_message = f"An error occurred: {str(e)}"
-            traceback.print_exc()  # Эта строка выводит трассировку стека в консоль для дополнительной информации
+            traceback.print_exc() 
             self.show_error_message(error_message)
         if hasattr(self, 'progress_bar') and self.progress_bar:
             self.progress_bar.destroy()
@@ -437,7 +437,7 @@ class App(ctk.CTk):
             messagebox.showinfo(title="Done!", message="You're all set")
         except Exception as e:
             error_message = f"An error occurred: {str(e)}"
-            traceback.print_exc()  # Эта строка выводит трассировку стека в консоль для дополнительной информации
+            traceback.print_exc()
             self.show_error_message(error_message)
         if hasattr(self, 'bar_tr') and self.bar_tr:
             self.bar_tr.destroy()

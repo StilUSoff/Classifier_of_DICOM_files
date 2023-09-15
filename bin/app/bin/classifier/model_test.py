@@ -53,7 +53,7 @@ def calculate_metrics(output, target):
     _, predicted_Bodypart = output['Bodypart'].cpu().max(1)
     gt_Bodypart = target['Bodypart_labels'].cpu()
 
-    with warnings.catch_warnings():  # sklearn may produce a warning when processing zero row in confusion matrix
+    with warnings.catch_warnings():
         warnings.simplefilter("ignore")
         accuracy_Modality = balanced_accuracy_score(y_true=gt_Modality.numpy(), y_pred=predicted_Modality.numpy())
         accuracy_Bodypart = balanced_accuracy_score(y_true=gt_Bodypart.numpy(), y_pred=predicted_Bodypart.numpy())
