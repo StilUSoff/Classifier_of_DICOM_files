@@ -2,10 +2,10 @@
 
 block_cipher = None
 
-a = Analysis(['bin/app.py'],
-    pathex=['/Users/tugayvadim/Documents/PycharmProjects/Classifier_of_DICOM_files/bin'],
+a = Analysis(['bin\\app.py'],
+    pathex=['c:\\Program Files\\JetBrains\\PyCharm\\projects\\Classifier_of_DICOM_files\\bin'],
     binaries=[],
-    datas=[('/Users/tugayvadim/Documents/PycharmProjects/Classifier_of_DICOM_files/bin/app', 'app')],
+    datas=[('c:\\Program Files\\JetBrains\\PyCharm\\projects\\Classifier_of_DICOM_files\\bin\\app', 'app')],
     hiddenimports=[],
     hookspath=[],
     hooksconfig={},
@@ -18,19 +18,19 @@ a = Analysis(['bin/app.py'],
 )
 
 a.datas += [
-    ('/Users/tugayvadim/Documents/PycharmProjects/Classifier_of_DICOM_files/bin/venv/lib/python3.8/site-packages/numpy', 'numpy'),
-    ('/Users/tugayvadim/Documents/PycharmProjects/Classifier_of_DICOM_files/bin/venv/lib/python3.8/site-packages/Pillow', 'Pillow'),
-    ('/Users/tugayvadim/Documents/PycharmProjects/Classifier_of_DICOM_files/bin/venv/lib/python3.8/site-packages/sklearn', 'sklearn'),
-    ('/Users/tugayvadim/Documents/PycharmProjects/Classifier_of_DICOM_files/bin/venv/lib/python3.8/site-packages/torch', 'torch'),
-    ('/Users/tugayvadim/Documents/PycharmProjects/Classifier_of_DICOM_files/bin/venv/lib/python3.8/site-packages/torchvision', 'torchvision'),
-    ('/Users/tugayvadim/Documents/PycharmProjects/Classifier_of_DICOM_files/bin/venv/lib/python3.8/site-packages/tqdm', 'tqdm'),
-    ('/Users/tugayvadim/Documents/PycharmProjects/Classifier_of_DICOM_files/bin/venv/lib/python3.8/site-packages/argparse', 'argparse'),
-    ('/Users/tugayvadim/Documents/PycharmProjects/Classifier_of_DICOM_files/bin/venv/lib/python3.8/site-packages/cv2', 'cv2'),
-    ('/Users/tugayvadim/Documents/PycharmProjects/Classifier_of_DICOM_files/bin/venv/lib/python3.8/site-packages/pydicom', 'pydicom'),
-    ('/Users/tugayvadim/Documents/PycharmProjects/Classifier_of_DICOM_files/bin/venv/lib/python3.8/site-packages/datetime', 'datetime'),
-    ('/Users/tugayvadim/Documents/PycharmProjects/Classifier_of_DICOM_files/bin/venv/lib/python3.8/site-packages/pandas', 'pandas'),
-    ('/Users/tugayvadim/Documents/PycharmProjects/Classifier_of_DICOM_files/bin/venv/lib/python3.8/site-packages/customtkinter', 'customtkinter'),
-    ('/Users/tugayvadim/Documents/PycharmProjects/Classifier_of_DICOM_files/bin/venv/lib/python3.8/site-packages/tensorboard', 'tensorboard'),
+    ('c:\\Program Files\\JetBrains\\PyCharm\\projects\\Classifier_of_DICOM_files\\bin\\venv\\lib\\python3.8\\site-packages\\numpy', 'numpy'),
+    ('c:\\Program Files\\JetBrains\\PyCharm\\projects\\Classifier_of_DICOM_files\\bin\\venv\\lib\\python3.8\\site-packages\\Pillow', 'Pillow'),
+    ('c:\\Program Files\\JetBrains\\PyCharm\\projects\\Classifier_of_DICOM_files\\bin\\venv\\lib\\python3.8\\site-packages\\sklearn', 'sklearn'),
+    ('c:\\Program Files\\JetBrains\\PyCharm\\projects\\Classifier_of_DICOM_files\\bin\\venv\\lib\\python3.8\\site-packages\\torch', 'torch'),
+    ('c:\\Program Files\\JetBrains\\PyCharm\\projects\\Classifier_of_DICOM_files\\bin\\venv\\lib\\python3.8\\site-packages\\torchvision', 'torchvision'),
+    ('c:\\Program Files\\JetBrains\\PyCharm\\projects\\Classifier_of_DICOM_files\\bin\\venv\\lib\\python3.8\\site-packages\\tqdm', 'tqdm'),
+    ('c:\\Program Files\\JetBrains\\PyCharm\\projects\\Classifier_of_DICOM_files\\bin\\venv\\lib\\python3.8\\site-packages\\argparse', 'argparse'),
+    ('c:\\Program Files\\JetBrains\\PyCharm\\projects\\Classifier_of_DICOM_files\\bin\\venv\\lib\\python3.8\\site-packages\\cv2', 'cv2'),
+    ('c:\\Program Files\\JetBrains\\PyCharm\\projects\\Classifier_of_DICOM_files\\bin\\venv\\lib\\python3.8\\site-packages\\pydicom', 'pydicom'),
+    ('c:\\Program Files\\JetBrains\\PyCharm\\projects\\Classifier_of_DICOM_files\\bin\\venv\\lib\\python3.8\\site-packages\\datetime', 'datetime'),
+    ('c:\\Program Files\\JetBrains\\PyCharm\\projects\\Classifier_of_DICOM_files\\bin\\venv\\lib\\python3.8\\site-packages\\pandas', 'pandas'),
+    ('c:\\Program Files\\JetBrains\\PyCharm\\projects\\Classifier_of_DICOM_files\\bin\\venv\\lib\\python3.8\\site-packages\\customtkinter', 'customtkinter'),
+    ('c:\\Program Files\\JetBrains\\PyCharm\\projects\\Classifier_of_DICOM_files\\bin\\venv\\lib\\python3.8\\site-packages\\tensorboard', 'tensorboard'),
 ]
 
 pyz = PYZ(a.pure, a.zipped_data, cipher=block_cipher)
@@ -51,24 +51,22 @@ exe = EXE(
     target_arch=None,
     codesign_identity=None,
     entitlements_file=None,
-    icon='/Users/tugayvadim/Documents/PycharmProjects/Classifier_of_DICOM_files/resources/icon.ico'
+    icon='c:\\Program Files\\JetBrains\\PyCharm\\projects\\Classifier_of_DICOM_files\\resources\\icon.ico'
 )
 
 app = BUNDLE(exe,
          name='Classifier app.app',
-         icon='/Users/tugayvadim/Documents/PycharmProjects/Classifier_of_DICOM_files/resources/icon.ico',
+         icon='c:\\Program Files\\JetBrains\\PyCharm\\projects\\Classifier_of_DICOM_files\\resources\\icon.ico',
          bundle_identifier=None,
          version='1.0.0',
          console=False
 )
 
-coll = COLLECT(
-    exe,
-    a.binaries,
-    a.zipfiles,
-    a.datas,
-    strip=False,
-    upx=True,
-    upx_exclude=[],
-    name='app',
-)
+coll = COLLECT(exe,
+               a.binaries,
+               a.zipfiles,
+               a.datas,
+               strip=False,
+               upx=True,
+               upx_exclude=[],
+               name='app')
