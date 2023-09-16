@@ -10,12 +10,12 @@
 
 ## Project Structure
 
-+ app.spec: Configuration file for packaging and distributing the application.
++ Classifier app.spec: Configuration file for packaging and distributing the application.
 + requirements.txt: File containing all the necessary Python libraries for the application.
-+ resources: Directory containing images used for packaging the application and within the application itself.
 + bin/: Directory containing scripts and processed data for the application and the application itself.
    + app.py: Python source code file for the application and its user interface.
    + venv: Python virtual environment (if used).
+   + resources: Directory containing images used for packaging the application and within the application itself.
    + app/: Directory containing scripts and processed data for the application.
       + checkpoints: Folder containing saved model checkpoints.
       + logs: Model logs and journals.
