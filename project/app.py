@@ -5,12 +5,21 @@ from tkinter import filedialog, messagebox
 import tkinter as tk
 from tkinter import ttk
 import sys
-sys.path.append('app/')
+
+def resource_path(relative_path):
+    """ Get absolute path to resource, works for dev and for PyInstaller """
+    if getattr(sys, 'frozen', False):
+        base_path = sys._MEIPASS
+    else:
+        base_path = os.getcwd()
+    return os.path.join(base_path, relative_path)
+
+sys.path.append('./app/')
 import classifier
-sys.path.append('app/bin')
+sys.path.append('./app/bin/')
 import dicom_refactor
 import sort 
-sys.path.append('app/bin/classifier')
+sys.path.append('./app/bin/classifier')
 import split_data
 from train import MainTrain
 import torch
@@ -35,7 +44,7 @@ class App(ctk.CTk):
         self.combobox = ctk.CTkOptionMenu(self.main_frame, fg_color=self.main_color, button_color = self.main_color, button_hover_color=self.hover_color, dropdown_fg_color=self.main_color, dropdown_hover_color=self.hover_color, width=80, values=["Classifire of images", "Sort DICOM files in path", "DICOM refactor to jpg", "Split data for model", "Train model"], command=self.combobox_callback)
         self.combobox.set("Select your algorithm")
         self.combobox.pack(pady=20, padx=20, side='left', anchor="nw")
-        home = ctk.CTkImage(Image.open("resources/home_button.png"), size=(16,16))
+        home = ctk.CTkImage(Image.open("./resources/home_button.png"), size=(16,16))
         self.home_button = ctk.CTkButton(self.main_frame, hover_color = self.hover_color,fg_color = self.main_color, height=30, width=30, image=home, command=self.main_page_back, text="")
         self.home_button.pack(pady=20, padx=20, side='right', anchor="ne")
         self.current_buttons = []
@@ -68,7 +77,7 @@ class App(ctk.CTk):
         self.main_page()
 
     def main_page(self):
-        img = ctk.CTkImage(Image.open("resources/icon.png"), size=(256, 256))
+        img = ctk.CTkImage(Image.open("./resources/icon.png"), size=(256, 256))
         image_label = ctk.CTkLabel(self.center_frame, image=img, text="")
         image_label.pack(pady=150)
         github_link = ctk.CTkLabel(self.center_frame, text="GitHub Repository", text_color=self.main_color, cursor="hand2")
@@ -477,9 +486,11 @@ class MyTable(tk.Frame):
     def __init__(self, master, **kwargs):
         super().__init__(master, **kwargs)
         headers = ['Name', 'Modality', 'Bodypart']
-        self.tree = ttk.Treeview(self, columns=headers, show='headings', height=25)
+        style = ttk.Style()
+        self.tree = ttk.Treeview(self, columns=headers, show='headings', height=25, style="Treeview")
         for header in headers:
             self.tree.heading(header, text=header)
+            self.tree.column(header, anchor="w", width=150)  # Установите ширину столбцов, по вашему желанию
         self.tree.pack(fill=tk.BOTH, expand=True)
 
     def display_table(self, data):
@@ -490,6 +501,8 @@ class MyTable(tk.Frame):
             modality = record.get('Modality', '')
             bodypart = record.get('Bodypart', '')
             self.tree.insert('', 'end', values=(file_name, modality, bodypart))
+
+
 
 
 if __name__ == "__main__":

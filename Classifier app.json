@@ -1,0 +1,161 @@
+{
+ "version": "auto-py-to-exe-configuration_v1",
+ "pyinstallerOptions": [
+  {
+   "optionDest": "noconfirm",
+   "value": true
+  },
+  {
+   "optionDest": "filenames",
+   "value": "C:/Program Files/JetBrains/PyCharm/projects/Classifier_of_DICOM_files/project/app.py"
+  },
+  {
+   "optionDest": "onefile",
+   "value": true
+  },
+  {
+   "optionDest": "console",
+   "value": true
+  },
+  {
+   "optionDest": "icon_file",
+   "value": "C:/Program Files/JetBrains/PyCharm/projects/Classifier_of_DICOM_files/project/resources/icon.ico"
+  },
+  {
+   "optionDest": "name",
+   "value": "Classifier app"
+  },
+  {
+   "optionDest": "ascii",
+   "value": false
+  },
+  {
+   "optionDest": "clean_build",
+   "value": false
+  },
+  {
+   "optionDest": "strip",
+   "value": false
+  },
+  {
+   "optionDest": "noupx",
+   "value": false
+  },
+  {
+   "optionDest": "disable_windowed_traceback",
+   "value": false
+  },
+  {
+   "optionDest": "embed_manifest",
+   "value": true
+  },
+  {
+   "optionDest": "uac_admin",
+   "value": false
+  },
+  {
+   "optionDest": "uac_uiaccess",
+   "value": false
+  },
+  {
+   "optionDest": "win_private_assemblies",
+   "value": false
+  },
+  {
+   "optionDest": "win_no_prefer_redirects",
+   "value": false
+  },
+  {
+   "optionDest": "bootloader_ignore_signals",
+   "value": false
+  },
+  {
+   "optionDest": "argv_emulation",
+   "value": false
+  },
+  {
+   "optionDest": "datas",
+   "value": "C:/Program Files/JetBrains/PyCharm/projects/Classifier_of_DICOM_files/project/resources;resources/"
+  },
+  {
+   "optionDest": "datas",
+   "value": "C:/Program Files/JetBrains/PyCharm/projects/Classifier_of_DICOM_files/project/app;app/"
+  },
+  {
+   "optionDest": "datas",
+   "value": "C:/Program Files/JetBrains/PyCharm/projects/Classifier_of_DICOM_files/project/app/bin;app/bin/"
+  },
+  {
+   "optionDest": "datas",
+   "value": "C:/Program Files/JetBrains/PyCharm/projects/Classifier_of_DICOM_files/project/app/checkpoints;app/checkpoints/"
+  },
+  {
+   "optionDest": "datas",
+   "value": "C:/Program Files/JetBrains/PyCharm/projects/Classifier_of_DICOM_files/project/app/logs;app/logs/"
+  },
+  {
+   "optionDest": "datas",
+   "value": "C:/Program Files/JetBrains/PyCharm/projects/Classifier_of_DICOM_files/project/app/bin/classifier;app/bin/classifier/"
+  },
+  {
+   "optionDest": "hiddenimports",
+   "value": "numpy"
+  },
+  {
+   "optionDest": "hiddenimports",
+   "value": "PIL"
+  },
+  {
+   "optionDest": "hiddenimports",
+   "value": "GDCM"
+  },
+  {
+   "optionDest": "hiddenimports",
+   "value": "torch"
+  },
+  {
+   "optionDest": "hiddenimports",
+   "value": "torchvision"
+  },
+  {
+   "optionDest": "hiddenimports",
+   "value": "tqdm"
+  },
+  {
+   "optionDest": "hiddenimports",
+   "value": "argparse"
+  },
+  {
+   "optionDest": "hiddenimports",
+   "value": "cv2"
+  },
+  {
+   "optionDest": "hiddenimports",
+   "value": "pydicom"
+  },
+  {
+   "optionDest": "hiddenimports",
+   "value": "datetime"
+  },
+  {
+   "optionDest": "hiddenimports",
+   "value": "pandas"
+  },
+  {
+   "optionDest": "hiddenimports",
+   "value": "customtkinter"
+  },
+  {
+   "optionDest": "hiddenimports",
+   "value": "sklearn"
+  },
+  {
+   "optionDest": "hiddenimports",
+   "value": "pyinstaller"
+  }
+ ],
+ "nonPyinstallerOptions": {
+  "increaseRecursionLimit": true,
+  "manualArguments": ""
+ }
+}

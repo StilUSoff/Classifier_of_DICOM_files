@@ -7,7 +7,7 @@ import pandas as pd
 import os
 import csv
 import sys
-sys.path.append('app/bin/classifier')
+sys.path.append('./app/bin/classifier/')
 from dataset import MedicalDataset, AttributesDataset, mean, std
 from model import MultiOutputModel
 from model_test import checkpoint_load
@@ -61,9 +61,9 @@ def create_csv(directory=None,modalities=None,bodyparts=None,names=None,check=No
         writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
         writer.writeheader()
         writer.writerows(data)
-        if check==1:
-            os.remove(".work_labels.csv")
-            return data
+    if check==1:
+        os.remove(".work_labels.csv")
+        return data
 
 def newest_file(string_to_add):
     current_directory = os.path.dirname(os.path.abspath(__file__))
