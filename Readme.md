@@ -10,9 +10,9 @@
 
 ## Project Structure
 
-+ Classifier app.spec: Configuration file for packaging and distributing the application.
++ auto_py_to_exe_settings.json: Configuration file for packaging and distributing the application with auto-py-to-exe.
 + requirements.txt: File containing all the necessary Python libraries for the application.
-+ bin/: Directory containing scripts and processed data for the application and the application itself.
++ project/: Directory containing scripts and processed data for the application and the application itself.
    + app.py: Python source code file for the application and its user interface.
    + venv: Python virtual environment (if used).
    + resources: Directory containing images used for packaging the application and within the application itself.
