@@ -1,8 +1,0 @@
-node_modules/
-venv/
-.DS_Store
-.*
-__pycache__/
-build/
-bin/app/bin/returning.py
-dist/
