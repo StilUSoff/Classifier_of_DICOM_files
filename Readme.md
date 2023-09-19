@@ -1,7 +1,7 @@
 # DICOM File Processing Project
 ![Alt](project/resources/icon.png)
 
-### This project is designed to work with medical data in DICOM format. It includes scripts and utilities for data conversion, sorting, analysis, as well as creating and training a classifier to identify the modality of images and the body parts depicted in them.
+### This project is designed to work with medical data in DICOM format. It includes scripts and utilities for data conversion, sorting, analysis, as well as creating and training a classifier to identify the modality of images and the body parts depicted in them. Application for Windows available in [Google Drive](https://drive.google.com/file/d/1cOc_1T1I5laebfMg65PaN-KrTuxtVlvW/view?usp=drive_link).
 
 ## Description of the Initial Model
 
