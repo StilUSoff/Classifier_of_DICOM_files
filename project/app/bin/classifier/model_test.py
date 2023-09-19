@@ -1,7 +1,7 @@
 import os
 import warnings
 import torch
-import sklearn
+from sklearn.metrics import balanced_accuracy_score
 
 def checkpoint_load(model, name):
     model.load_state_dict(torch.load(name, map_location='cpu'))
@@ -55,7 +55,7 @@ def calculate_metrics(output, target):
 
     with warnings.catch_warnings():
         warnings.simplefilter("ignore")
-        accuracy_Modality = sklearn.metrics.balanced_accuracy_score(y_true=gt_Modality.numpy(), y_pred=predicted_Modality.numpy())
-        accuracy_Bodypart = sklearn.metrics.balanced_accuracy_score(y_true=gt_Bodypart.numpy(), y_pred=predicted_Bodypart.numpy())
+        accuracy_Modality = balanced_accuracy_score(y_true=gt_Modality.numpy(), y_pred=predicted_Modality.numpy())
+        accuracy_Bodypart = balanced_accuracy_score(y_true=gt_Bodypart.numpy(), y_pred=predicted_Bodypart.numpy())
 
     return accuracy_Modality, accuracy_Bodypart

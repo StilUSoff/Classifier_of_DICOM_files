@@ -16,11 +16,8 @@ class MainTrain():
         if app:
             self.app = app
 
-    def train_scipt(self, checkpoint, N_epochs, batch_size, num_workers):
+    def train_scipt(self, checkpoint, N_epochs, batch_size):
         self.device = torch.device("cuda" if torch.cuda.is_available() and self.device == 'cuda' else "cpu")
-        ###### for test
-        print(self.device)
-        ######
         attributes = AttributesDataset(self.attributes_file)
 
         train_transform = transforms.Compose([
@@ -32,7 +29,7 @@ class MainTrain():
         ])
 
         train_dataset = MedicalDataset(self.work_folder+'/train.csv', attributes, train_transform)
-        train_dataloader = DataLoader(train_dataset, batch_size=batch_size, shuffle=True, num_workers=num_workers)
+        train_dataloader = DataLoader(train_dataset, batch_size=batch_size, shuffle=True)
         if isinstance(self.device, int):
             self.device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
         else:
@@ -90,7 +87,6 @@ if __name__ == '__main__':
     parser.add_argument('device', type=str, help="Device: 'cuda' or 'cpu'")
     parser.add_argument('N_epochs', type=int, help="Amount of epochs")
     parser.add_argument('batch_size', type=int, help="Batch size")
-    parser.add_argument('num_workers', type=int, help="num_workers")
     args = parser.parse_args()
     train_object = MainTrain(args.work_folder, args.attributes_file, args.device)
-    train_object.train_scipt(args.checkpoint, args.N_epochs, args.batch_size, args.num_workers)
+    train_object.train_scipt(args.checkpoint, args.N_epochs, args.batch_size)

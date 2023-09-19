@@ -1,11 +1,5 @@
-from PIL import Image
-import customtkinter as ctk
 import os
-from tkinter import filedialog, messagebox
-import tkinter as tk
-from tkinter import ttk
 import sys
-
 def resource_path(relative_path):
     """ Get absolute path to resource, works for dev and for PyInstaller """
     if getattr(sys, 'frozen', False):
@@ -13,16 +7,20 @@ def resource_path(relative_path):
     else:
         base_path = os.getcwd()
     return os.path.join(base_path, relative_path)
-
-sys.path.append('./app/')
+sys.path.append(resource_path('app/'))
 import classifier
-sys.path.append('./app/bin/')
+sys.path.append(resource_path('app/bin/'))
 import dicom_refactor
 import sort 
-sys.path.append('./app/bin/classifier')
+sys.path.append(resource_path('app/bin/classifier'))
 import split_data
 from train import MainTrain
 import torch
+from PIL import Image
+from tkinter import filedialog, messagebox
+import tkinter as tk
+from tkinter import ttk
+import customtkinter as ctk
 import threading
 import webbrowser
 import traceback
@@ -44,7 +42,7 @@ class App(ctk.CTk):
         self.combobox = ctk.CTkOptionMenu(self.main_frame, fg_color=self.main_color, button_color = self.main_color, button_hover_color=self.hover_color, dropdown_fg_color=self.main_color, dropdown_hover_color=self.hover_color, width=80, values=["Classifire of images", "Sort DICOM files in path", "DICOM refactor to jpg", "Split data for model", "Train model"], command=self.combobox_callback)
         self.combobox.set("Select your algorithm")
         self.combobox.pack(pady=20, padx=20, side='left', anchor="nw")
-        home = ctk.CTkImage(Image.open("./resources/home_button.png"), size=(16,16))
+        home = ctk.CTkImage(Image.open(resource_path("resources/home_button.png")), size=(16,16))
         self.home_button = ctk.CTkButton(self.main_frame, hover_color = self.hover_color,fg_color = self.main_color, height=30, width=30, image=home, command=self.main_page_back, text="")
         self.home_button.pack(pady=20, padx=20, side='right', anchor="ne")
         self.current_buttons = []
@@ -77,7 +75,7 @@ class App(ctk.CTk):
         self.main_page()
 
     def main_page(self):
-        img = ctk.CTkImage(Image.open("./resources/icon.png"), size=(256, 256))
+        img = ctk.CTkImage(Image.open(resource_path("resources/icon.png")), size=(256, 256))
         image_label = ctk.CTkLabel(self.center_frame, image=img, text="")
         image_label.pack(pady=150)
         github_link = ctk.CTkLabel(self.center_frame, text="GitHub Repository", text_color=self.main_color, cursor="hand2")
@@ -191,11 +189,9 @@ class App(ctk.CTk):
         self.N_epochs.pack(padx=20, pady=20)
         self.batch_size = ctk.CTkButton(self.center_frame,hover_color=self.hover_color,fg_color=self.main_color, text="Samples per batch", command=self.batch_size_click_event)
         self.batch_size.pack(padx=20, pady=20)
-        self.num_workers = ctk.CTkButton(self.center_frame,hover_color=self.hover_color,fg_color=self.main_color, text="Subprocesses", command=self.num_workers_click_event)
-        self.num_workers.pack(padx=20, pady=20)
         self.start_ts = ctk.CTkButton(self.center_frame, hover_color=self.hover_color,fg_color=self.main_color,text="Start", command=self.run_pr_tr)
         self.start_ts.pack(pady=20)
-        self.current_buttons.extend([folder_button, file_button, save_checkpoints, self.N_epochs, self.batch_size, self.num_workers, self.start_ts, textbox_csv, textbox_atr])
+        self.current_buttons.extend([folder_button, file_button, save_checkpoints, self.N_epochs, self.batch_size, self.start_ts, textbox_csv, textbox_atr])
         if torch.cuda.is_available():
             self.current_buttons.extend([checkbox])
 
@@ -213,15 +209,6 @@ class App(ctk.CTk):
         if self.batch_size_wr:
             if self.batch_size_wr.isnumeric():
                 self.current_buttons[4].configure(fg_color=self.chosen_color) 
-            else:
-                error_message = "Incorrect iput: only numerics"
-                self.show_error_message(error_message)
-
-    def num_workers_click_event(self):
-        self.num_workers_wr = ctk.CTkInputDialog(text="Type in a number of subprocesses to use:", title="Subprocesses").get_input()
-        if self.num_workers_wr:
-            if self.num_workers_wr.isnumeric():
-                self.current_buttons[5].configure(fg_color=self.chosen_color) 
             else:
                 error_message = "Incorrect iput: only numerics"
                 self.show_error_message(error_message)
@@ -442,7 +429,7 @@ class App(ctk.CTk):
         self.current_buttons.extend([self.bar_tr])
         try:
             train_object = MainTrain(folder_path, atr_folder_path, gpu_choice, self)
-            train_object.train_scipt(checkpoint=check_saves, N_epochs=int(self.N_epochs_wr), batch_size=int(self.batch_size_wr), num_workers=int(self.num_workers_wr))
+            train_object.train_scipt(checkpoint=check_saves, N_epochs=int(self.N_epochs_wr), batch_size=int(self.batch_size_wr))
             messagebox.showinfo(title="Done!", message="You're all set")
         except Exception as e:
             error_message = f"An error occurred: {str(e)}"
@@ -450,11 +437,10 @@ class App(ctk.CTk):
             self.show_error_message(error_message)
         if hasattr(self, 'bar_tr') and self.bar_tr:
             self.bar_tr.destroy()
-        [button.configure(fg_color=self.main_color) for button in self.current_buttons[0:7]]
+        [button.configure(fg_color=self.main_color) for button in self.current_buttons[0:6]]
 
     def on_epoch_end(self):
         self.bar_tr.step()
-        print("step")
 
     def error_check_img(self, work_folder):
         for filename in os.listdir(work_folder):
@@ -502,8 +488,13 @@ class MyTable(tk.Frame):
             bodypart = record.get('Bodypart', '')
             self.tree.insert('', 'end', values=(file_name, modality, bodypart))
 
+def resource_path(relative_path):
+    try:
+        base_path = sys._MEIPASS
+    except Exception:
+        base_path = os.path.abspath(".")
 
-
+    return os.path.join(base_path, relative_path)
 
 if __name__ == "__main__":
     app = App()

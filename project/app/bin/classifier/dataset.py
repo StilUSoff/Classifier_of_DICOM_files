@@ -42,7 +42,9 @@ class MedicalDataset(Dataset):
         self.Bodypart_labels = []
 
         with open(annotation_path) as f:
-            reader = csv.DictReader(f)
+            dialect = csv.Sniffer().sniff(f.read(1024))
+            f.seek(0)
+            reader = csv.DictReader(f, dialect=dialect)
             for row in reader:
                 self.data.append(row['Name'])
                 self.Modality_labels.append(self.attr.Modality_name_to_id[row['Modality']])

@@ -11,7 +11,7 @@
   },
   {
    "optionDest": "onefile",
-   "value": true
+   "value": false
   },
   {
    "optionDest": "console",
@@ -75,27 +75,11 @@
   },
   {
    "optionDest": "datas",
-   "value": "C:/Program Files/JetBrains/PyCharm/projects/Classifier_of_DICOM_files/project/resources;resources/"
-  },
-  {
-   "optionDest": "datas",
    "value": "C:/Program Files/JetBrains/PyCharm/projects/Classifier_of_DICOM_files/project/app;app/"
   },
   {
    "optionDest": "datas",
-   "value": "C:/Program Files/JetBrains/PyCharm/projects/Classifier_of_DICOM_files/project/app/bin;app/bin/"
-  },
-  {
-   "optionDest": "datas",
-   "value": "C:/Program Files/JetBrains/PyCharm/projects/Classifier_of_DICOM_files/project/app/checkpoints;app/checkpoints/"
-  },
-  {
-   "optionDest": "datas",
-   "value": "C:/Program Files/JetBrains/PyCharm/projects/Classifier_of_DICOM_files/project/app/logs;app/logs/"
-  },
-  {
-   "optionDest": "datas",
-   "value": "C:/Program Files/JetBrains/PyCharm/projects/Classifier_of_DICOM_files/project/app/bin/classifier;app/bin/classifier/"
+   "value": "C:/Program Files/JetBrains/PyCharm/projects/Classifier_of_DICOM_files/project/resources;resources/"
   },
   {
    "optionDest": "hiddenimports",
@@ -107,7 +91,11 @@
   },
   {
    "optionDest": "hiddenimports",
-   "value": "GDCM"
+   "value": "pydicom"
+  },
+  {
+   "optionDest": "hiddenimports",
+   "value": "sklearn"
   },
   {
    "optionDest": "hiddenimports",
@@ -131,10 +119,6 @@
   },
   {
    "optionDest": "hiddenimports",
-   "value": "pydicom"
-  },
-  {
-   "optionDest": "hiddenimports",
    "value": "datetime"
   },
   {
@@ -147,11 +131,7 @@
   },
   {
    "optionDest": "hiddenimports",
-   "value": "sklearn"
-  },
-  {
-   "optionDest": "hiddenimports",
-   "value": "pyinstaller"
+   "value": "tensorboard"
   }
  ],
  "nonPyinstallerOptions": {
