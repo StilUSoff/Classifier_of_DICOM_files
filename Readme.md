@@ -5,7 +5,7 @@
 
 ## Description of the Initial Model
 
-- Supports .jpg images with three RGB channels and the following modalities and body parts: CT scans of the brain, abdominal cavity, and chest; X-rays of the wrist, abdominal cavity, and chest.
+- Supports .jpg images with three RGB channels and the following modalities and body parts: CT of the brain, abdominal cavity, and chest; X-Ray of the wrist, abdominal cavity, and chest.
 - However, you can train the model on your own data; all tools are provided (except for creating a .csv file with data and attributes).
 
 ## Project Structure
